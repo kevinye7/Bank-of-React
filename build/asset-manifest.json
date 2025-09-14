@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/bank-of-react-starter-code/static/css/main.09be3d56.chunk.css",
+    "main.js": "/bank-of-react-starter-code/static/js/main.82eb848f.chunk.js",
+    "main.js.map": "/bank-of-react-starter-code/static/js/main.82eb848f.chunk.js.map",
+    "runtime~main.js": "/bank-of-react-starter-code/static/js/runtime~main.ebae9d21.js",
+    "runtime~main.js.map": "/bank-of-react-starter-code/static/js/runtime~main.ebae9d21.js.map",
+    "static/js/2.882dc19f.chunk.js": "/bank-of-react-starter-code/static/js/2.882dc19f.chunk.js",
+    "static/js/2.882dc19f.chunk.js.map": "/bank-of-react-starter-code/static/js/2.882dc19f.chunk.js.map",
+    "static/js/3.99eabb23.chunk.js": "/bank-of-react-starter-code/static/js/3.99eabb23.chunk.js",
+    "static/js/3.99eabb23.chunk.js.map": "/bank-of-react-starter-code/static/js/3.99eabb23.chunk.js.map",
+    "index.html": "/bank-of-react-starter-code/index.html",
+    "precache-manifest.3c577055e7e62b27d9904b518a4db512.js": "/bank-of-react-starter-code/precache-manifest.3c577055e7e62b27d9904b518a4db512.js",
+    "service-worker.js": "/bank-of-react-starter-code/service-worker.js",
+    "static/css/main.09be3d56.chunk.css.map": "/bank-of-react-starter-code/static/css/main.09be3d56.chunk.css.map"
+  }
+}

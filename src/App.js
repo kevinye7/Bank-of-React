@@ -18,7 +18,7 @@ class App extends Component {
   constructor() {  // Create and initialize state
     super(); 
     this.state = {
-      accountBalance: 1234567.89,
+      accountBalance: 0,
       creditList: [],
       debitList: [],
       currentUser: {
@@ -35,6 +35,51 @@ class App extends Component {
     this.setState({currentUser: newUser})
   }
 
+  componentDidMount() {
+    // Fetch credits data
+    fetch('https://johnnylaicode.github.io/api/credits.json')
+      .then(response => response.json())
+      .then(data => {
+        const totalCredits = data.reduce((total, credit) => total + credit.amount, 0);
+        this.setState({ creditList: data, accountBalance: totalCredits });
+      })
+      .catch(error => {
+        console.error('Error fetching credits data:', error);
+      });
+
+    // Fetch debits data
+    fetch('https://johnnylaicode.github.io/api/debits.json')
+      .then(response => response.json())
+      .then(data => {
+        const totalDebits = data.reduce((total, debit) => total + debit.amount, 0);
+        this.setState({ debitList: data, accountBalance: this.state.accountBalance - totalDebits });
+      })
+      .catch(error => {
+        console.error('Error fetching debits data:', error);
+      });
+  }
+
+  addCredits = (info) => {
+    let credits = [...this.state.creditList];
+    let newCreditSubmission = {
+      amount: info.amount,
+      description: info.description,
+      date: info.date,
+    };
+    credits.push(newCreditSubmission);
+    let newBalance = Number(this.state.accountBalance) + Number(info.amount);
+    this.setState({ creditList: credits, accountBalance: newBalance });
+    console.log(credits);
+  };
+
+  // Function to add debit
+  addDebit = (debit) => {
+    this.setState(prevState => ({
+      debitList: [...prevState.debitList, debit],
+      accountBalance: prevState.accountBalance - debit.amount
+    }));
+  }
+
   // Create Routes and React elements to be rendered using React components
   render() {  
     // Create React elements and pass input props to components
@@ -43,12 +88,12 @@ class App extends Component {
       <UserProfile userName={this.state.currentUser.userName} memberSince={this.state.currentUser.memberSince} />
     )
     const LogInComponent = () => (<LogIn user={this.state.currentUser} mockLogIn={this.mockLogIn} />)
-    const CreditsComponent = () => (<Credits credits={this.state.creditList} />) 
-    const DebitsComponent = () => (<Debits debits={this.state.debitList} />) 
+    const CreditsComponent = () => (<Credits credits={this.state.creditList} accountBalance={this.state.accountBalance} addCredits={this.addCredits} />) 
+    const DebitsComponent = () => (<Debits debits={this.state.debitList} accountBalance={this.state.accountBalance} addDebit={this.addDebit} />) 
 
     // Important: Include the "basename" in Router, which is needed for deploying the React app to GitHub Pages
     return (
-      <Router basename="/bank-of-react-starter-code">
+      <Router basename="/bank-of-react">
         <div>
           <Route exact path="/" render={HomeComponent}/>
           <Route exact path="/userProfile" render={UserProfileComponent}/>
