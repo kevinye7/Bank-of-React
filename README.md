@@ -1,5 +1,15 @@
-# bank-of-react-starter-code
-This repository is the starter code for Assignment 3 - Bank of React.
+# bank-of-react
+This repository is for Assignment 3 - Bank of React.
+
+### Group Members
+Hamza Algamoos
+
+Tashfiah Zaman
+
+Justin Chu
+
+Bodrul Jalal
+
 
 ### Live Link 
 [Website link](https://johnnylaicode.github.io/bank-of-react-starter-code/)
