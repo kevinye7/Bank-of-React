@@ -8,7 +8,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import {Link} from 'react-router-dom';
 
-class LogIn extends Component {
+class KevinLogin extends Component {
   constructor (props) {  // Create and initialize state
     super(props)
     this.state = {
@@ -38,7 +38,7 @@ class LogIn extends Component {
   render () {
     // Redirect to "User Profile" page when "Log In" button is clicked
     if (this.state.redirect) {  
-      return (<Redirect to="/userProfile"/>);
+      return (<Redirect to="/bank/userProfile"/>);
     }
 
     // Render the login form (and call "handleSubmit" method when "Log In" button is clicked to submit form)
@@ -58,10 +58,10 @@ class LogIn extends Component {
           <button>Log In</button>
         </form>  
         <br/>
-        <Link to="/">Return to Home</Link>
+        <Link to="/bank">Return to Home</Link>
       </div>
     );
   }
 }
 
-export default LogIn;
+export default KevinLogin;

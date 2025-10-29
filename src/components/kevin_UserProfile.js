@@ -7,7 +7,7 @@ Note: You don't need to work on this file for the Assignment.
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 
-class UserProfile extends Component {
+class KevinUserProfile extends Component {
   render() {
     return (
       <div>
@@ -16,10 +16,10 @@ class UserProfile extends Component {
         <div>Username: {this.props.userName}</div>
         <div>Member Since: {this.props.memberSince}</div>
         <br/>
-        <Link to="/">Return to Home</Link>
+        <Link to="/bank">Return to Home</Link>
       </div>
     );
   }
 }
 
-export default UserProfile;
+export default KevinUserProfile;

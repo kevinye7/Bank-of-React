@@ -12,7 +12,7 @@ class LandingPage extends Component {
           <div style={styles.bankCard}>
             <h2 style={styles.bankName}>David's Bank</h2>
             <p style={styles.bankDescription}>Access your personal banking portal</p>
-            <Link to="/bank" style={styles.button}>
+            <Link to="/mybank" style={styles.button}>
               Go to David's Bank
             </Link>
           </div>

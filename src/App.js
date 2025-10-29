@@ -1,11 +1,20 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import LandingPage from './components/LandingPage';
-import Home from './components/Home';
-import UserProfile from './components/UserProfile';
-import Login from './components/Login';
-import Credits from './components/Credits';
-import Debits from './components/Debits';
+
+// Kevin's components
+import KevinHome from './components/kevin_Home';
+import KevinUserProfile from './components/kevin_UserProfile';
+import KevinLogin from './components/kevin_Login';
+import KevinCredits from './components/kevin_Credits';
+import KevinDebits from './components/kevin_Debits';
+
+// David's components
+import DavidHome from './components/david_Home';
+import DavidUserProfile from './components/david_UserProfile';
+import DavidLogin from './components/david_Login';
+import DavidCredits from './components/david_Credits';
+import DavidDebits from './components/david_Debits';
 
 class App extends Component {
   constructor() {
@@ -85,31 +94,64 @@ class App extends Component {
       <LandingPage />
     );
 
-    const HomeComponent = () => (
-      <Home accountBalance={this.state.accountBalance} />
+    // Kevin's bank components
+    const KevinHomeComponent = () => (
+      <KevinHome accountBalance={this.state.accountBalance} />
     );
 
-    const UserProfileComponent = () => (
-      <UserProfile
+    const KevinUserProfileComponent = () => (
+      <KevinUserProfile
         userName={this.state.currentUser.userName}
         memberSince={this.state.currentUser.memberSince}
       />
     );
 
-    const LogInComponent = () => (
-      <Login user={this.state.currentUser} mockLogIn={this.mockLogIn} />
+    const KevinLoginComponent = () => (
+      <KevinLogin user={this.state.currentUser} mockLogIn={this.mockLogIn} />
     );
 
-    const CreditsComponent = () => (
-      <Credits
+    const KevinCreditsComponent = () => (
+      <KevinCredits
         credits={this.state.credits}
         addCredit={this.addCredit}
         accountBalance={this.state.accountBalance}
       />
     );
 
-    const DebitsComponent = () => (
-      <Debits
+    const KevinDebitsComponent = () => (
+      <KevinDebits
+        debits={this.state.debits}
+        addDebit={this.addDebit}
+        accountBalance={this.state.accountBalance}
+      />
+    );
+
+    // David's bank components
+    const DavidHomeComponent = () => (
+      <DavidHome accountBalance={this.state.accountBalance} />
+    );
+
+    const DavidUserProfileComponent = () => (
+      <DavidUserProfile
+        userName={this.state.currentUser.userName}
+        memberSince={this.state.currentUser.memberSince}
+      />
+    );
+
+    const DavidLoginComponent = () => (
+      <DavidLogin user={this.state.currentUser} mockLogIn={this.mockLogIn} />
+    );
+
+    const DavidCreditsComponent = () => (
+      <DavidCredits
+        credits={this.state.credits}
+        addCredit={this.addCredit}
+        accountBalance={this.state.accountBalance}
+      />
+    );
+
+    const DavidDebitsComponent = () => (
+      <DavidDebits
         debits={this.state.debits}
         addDebit={this.addDebit}
         accountBalance={this.state.accountBalance}
@@ -120,11 +162,20 @@ class App extends Component {
       <Router basename="/Bank-of-React">
         <div>
           <Route exact path="/" render={LandingPageComponent} />
-          <Route exact path="/bank" render={HomeComponent} />
-          <Route exact path="/bank/userProfile" render={UserProfileComponent} />
-          <Route exact path="/bank/login" render={LogInComponent} />
-          <Route exact path="/bank/credits" render={CreditsComponent} />
-          <Route exact path="/bank/debits" render={DebitsComponent} />
+          
+          {/* Kevin's bank routes */}
+          <Route exact path="/bank" render={KevinHomeComponent} />
+          <Route exact path="/bank/userProfile" render={KevinUserProfileComponent} />
+          <Route exact path="/bank/login" render={KevinLoginComponent} />
+          <Route exact path="/bank/credits" render={KevinCreditsComponent} />
+          <Route exact path="/bank/debits" render={KevinDebitsComponent} />
+          
+          {/* David's bank routes */}
+          <Route exact path="/mybank" render={DavidHomeComponent} />
+          <Route exact path="/mybank/userProfile" render={DavidUserProfileComponent} />
+          <Route exact path="/mybank/login" render={DavidLoginComponent} />
+          <Route exact path="/mybank/credits" render={DavidCreditsComponent} />
+          <Route exact path="/mybank/debits" render={DavidDebitsComponent} />
         </div>
       </Router>
     );
