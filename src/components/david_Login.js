@@ -8,20 +8,48 @@ class DavidLogin extends Component {
     this.state = {
       user: {
         userName: this.props.user.userName,
+        email: this.props.user.email || '',
         password: ''
       },
-      redirect: false
+      redirect: false,
+      errors: {}
     }
   }
 
   handleChange = (e) => {
+    const { name, value } = e.target;
     const updatedUser = {...this.state.user};
-    updatedUser.userName = e.target.value;
+    updatedUser[name] = value;
     this.setState({user: updatedUser})
+    
+    // Clear error when user starts typing
+    if (this.state.errors[name]) {
+      const errors = {...this.state.errors};
+      delete errors[name];
+      this.setState({errors});
+    }
+  }
+
+  validate = () => {
+    const errors = {};
+    if (!this.state.user.userName.trim()) {
+      errors.userName = 'Username is required';
+    }
+    if (!this.state.user.password) {
+      errors.password = 'Password is required';
+    }
+    return errors;
   }
 
   handleSubmit = (e) => {
     e.preventDefault()
+    const errors = this.validate();
+    
+    if (Object.keys(errors).length > 0) {
+      this.setState({errors});
+      return;
+    }
+    
     this.props.mockLogIn(this.state.user)
     this.setState({redirect: true})
   }
@@ -37,22 +65,47 @@ class DavidLogin extends Component {
         
         <form onSubmit={this.handleSubmit} style={styles.form}>
           <div style={styles.formGroup}>
-            <label style={styles.label}>User Name</label>
+            <label style={styles.label}>User Name *</label>
             <input 
               type="text" 
               name="userName" 
-              defaultValue={this.props.user.userName} 
+              value={this.state.user.userName}
+              onChange={this.handleChange}
+              style={{
+                ...styles.input,
+                ...(this.state.errors.userName ? styles.inputError : {})
+              }}
+            />
+            {this.state.errors.userName && (
+              <div style={styles.error}>{this.state.errors.userName}</div>
+            )}
+          </div>
+          <div style={styles.formGroup}>
+            <label style={styles.label}>Email (optional)</label>
+            <input 
+              type="email" 
+              name="email" 
+              value={this.state.user.email}
               onChange={this.handleChange}
               style={styles.input}
+              placeholder="your.email@example.com"
             />
           </div>
           <div style={styles.formGroup}>
-            <label style={styles.label}>Password</label>
+            <label style={styles.label}>Password *</label>
             <input 
               type="password" 
               name="password"
-              style={styles.input}
+              value={this.state.user.password}
+              onChange={this.handleChange}
+              style={{
+                ...styles.input,
+                ...(this.state.errors.password ? styles.inputError : {})
+              }}
             />
+            {this.state.errors.password && (
+              <div style={styles.error}>{this.state.errors.password}</div>
+            )}
           </div>
           <button type="submit" style={styles.button}>Log In</button>
         </form>  
@@ -108,6 +161,14 @@ const styles = {
   link: {
     color: '#007bff',
     textDecoration: 'none',
+  },
+  inputError: {
+    borderColor: '#dc3545',
+  },
+  error: {
+    color: '#dc3545',
+    fontSize: '0.875rem',
+    marginTop: '4px',
   },
 };
 

@@ -11,6 +11,11 @@ class DavidUserProfile extends Component {
           <div style={styles.infoRow}>
             <strong>Username:</strong> {this.props.userName}
           </div>
+          {this.props.email && (
+            <div style={styles.infoRow}>
+              <strong>Email:</strong> {this.props.email}
+            </div>
+          )}
           <div style={styles.infoRow}>
             <strong>Member Since:</strong> {this.props.memberSince}
           </div>
