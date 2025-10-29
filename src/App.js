@@ -23,9 +23,15 @@ class App extends Component {
       accountBalance: 0,
       credits: [],
       debits: [],
-      currentUser: {
-        userName: 'Joe Smith',
+      kevinUser: {
+        userName: 'Kevin User',
+        email: 'kevin@example.com',
         memberSince: '11/22/99',
+      },
+      davidUser: {
+        userName: 'David User',
+        email: 'david@example.com',
+        memberSince: '01/15/20',
       }
     };
   }
@@ -83,10 +89,22 @@ class App extends Component {
     }), this.calculateBalance);
   }
 
-  mockLogIn = (logInInfo) => {
-    const newUser = { ...this.state.currentUser };
+  mockLogInKevin = (logInInfo) => {
+    const newUser = { ...this.state.kevinUser };
     newUser.userName = logInInfo.userName;
-    this.setState({ currentUser: newUser });
+    if (logInInfo.email) {
+      newUser.email = logInInfo.email;
+    }
+    this.setState({ kevinUser: newUser });
+  }
+
+  mockLogInDavid = (logInInfo) => {
+    const newUser = { ...this.state.davidUser };
+    newUser.userName = logInInfo.userName;
+    if (logInInfo.email) {
+      newUser.email = logInInfo.email;
+    }
+    this.setState({ davidUser: newUser });
   }
 
   render() {
@@ -101,13 +119,14 @@ class App extends Component {
 
     const KevinUserProfileComponent = () => (
       <KevinUserProfile
-        userName={this.state.currentUser.userName}
-        memberSince={this.state.currentUser.memberSince}
+        userName={this.state.kevinUser.userName}
+        email={this.state.kevinUser.email}
+        memberSince={this.state.kevinUser.memberSince}
       />
     );
 
     const KevinLoginComponent = () => (
-      <KevinLogin user={this.state.currentUser} mockLogIn={this.mockLogIn} />
+      <KevinLogin user={this.state.kevinUser} mockLogIn={this.mockLogInKevin} />
     );
 
     const KevinCreditsComponent = () => (
@@ -133,13 +152,14 @@ class App extends Component {
 
     const DavidUserProfileComponent = () => (
       <DavidUserProfile
-        userName={this.state.currentUser.userName}
-        memberSince={this.state.currentUser.memberSince}
+        userName={this.state.davidUser.userName}
+        email={this.state.davidUser.email}
+        memberSince={this.state.davidUser.memberSince}
       />
     );
 
     const DavidLoginComponent = () => (
-      <DavidLogin user={this.state.currentUser} mockLogIn={this.mockLogIn} />
+      <DavidLogin user={this.state.davidUser} mockLogIn={this.mockLogInDavid} />
     );
 
     const DavidCreditsComponent = () => (
