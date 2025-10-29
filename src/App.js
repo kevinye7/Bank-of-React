@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import LandingPage from './components/LandingPage';
 import Home from './components/Home';
 import UserProfile from './components/UserProfile';
 import Login from './components/Login';
@@ -80,6 +81,10 @@ class App extends Component {
   }
 
   render() {
+    const LandingPageComponent = () => (
+      <LandingPage />
+    );
+
     const HomeComponent = () => (
       <Home accountBalance={this.state.accountBalance} />
     );
@@ -114,11 +119,12 @@ class App extends Component {
     return (
       <Router basename="/Bank-of-React">
         <div>
-          <Route exact path="/" render={HomeComponent} />
-          <Route exact path="/userProfile" render={UserProfileComponent} />
-          <Route exact path="/login" render={LogInComponent} />
-          <Route exact path="/credits" render={CreditsComponent} />
-          <Route exact path="/debits" render={DebitsComponent} />
+          <Route exact path="/" render={LandingPageComponent} />
+          <Route exact path="/bank" render={HomeComponent} />
+          <Route exact path="/bank/userProfile" render={UserProfileComponent} />
+          <Route exact path="/bank/login" render={LogInComponent} />
+          <Route exact path="/bank/credits" render={CreditsComponent} />
+          <Route exact path="/bank/debits" render={DebitsComponent} />
         </div>
       </Router>
     );
