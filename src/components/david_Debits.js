@@ -32,27 +32,31 @@ class DavidDebits extends Component {
 
     return (
       <div style={styles.container}>
-        <h1 style={styles.title}>Debits</h1>
-        
-        <div style={styles.balanceSection}>
+        <header style={styles.header}>
+          <h1 style={styles.title}>Debits</h1>
+          <Link to="/mybank" style={styles.backLink}>← Back to Home</Link>
+        </header>
+
+        <div style={styles.balanceTile}>
           <DavidAccountBalance accountBalance={accountBalance} />
         </div>
-        
-        <div style={styles.section}>
+
+        <div style={styles.tile}>
           <h2 style={styles.sectionTitle}>Add New Debit</h2>
           <form onSubmit={this.handleSubmit} style={styles.form}>
             <div style={styles.formGroup}>
-              <label style={styles.label}>Description: </label>
+              <label style={styles.label}>Description</label>
               <input
                 type="text"
                 value={this.state.description}
                 onChange={this.handleDescriptionChange}
                 required
                 style={styles.input}
+                placeholder="Enter debit description"
               />
             </div>
             <div style={styles.formGroup}>
-              <label style={styles.label}>Amount: </label>
+              <label style={styles.label}>Amount</label>
               <input
                 type="number"
                 step="0.01"
@@ -60,26 +64,34 @@ class DavidDebits extends Component {
                 onChange={this.handleAmountChange}
                 required
                 style={styles.input}
+                placeholder="0.00"
               />
             </div>
-            <button type="submit" style={styles.button}>Add Debit</button>
+            <button type="submit" style={styles.submitButton}>
+              <span style={styles.buttonIcon}>➖</span>
+              Add Debit
+            </button>
           </form>
         </div>
 
-        <div style={styles.section}>
+        <div style={styles.tile}>
           <h2 style={styles.sectionTitle}>Debit History</h2>
-          <ul style={styles.list}>
-            {debits.map(debit => (
-              <li key={debit.id} style={styles.listItem}>
-                Description: {debit.description} | 
-                Amount: ${debit.amount.toFixed(2)} | 
-                Date: {debit.date}
-              </li>
-            ))}
-          </ul>
+          <div style={styles.transactionGrid}>
+            {debits.length === 0 ? (
+              <p style={styles.emptyMessage}>No debits yet. Add your first debit above.</p>
+            ) : (
+              debits.map(debit => (
+                <div key={debit.id} style={styles.transactionTile}>
+                  <div style={styles.transactionHeader}>
+                    <div style={styles.transactionAmount}>-${debit.amount.toFixed(2)}</div>
+                  </div>
+                  <div style={styles.transactionDesc}>{debit.description}</div>
+                  <div style={styles.transactionDate}>{debit.date}</div>
+                </div>
+              ))
+            )}
+          </div>
         </div>
-
-        <Link to="/mybank" style={styles.link}>Return to Home</Link>
       </div>
     );
   }
@@ -87,72 +99,118 @@ class DavidDebits extends Component {
 
 const styles = {
   container: {
-    padding: '40px 20px',
+    minHeight: '100vh',
+    backgroundColor: '#faf5ff',
+    padding: '32px 24px',
+  },
+  header: {
     textAlign: 'center',
+    marginBottom: '32px',
   },
   title: {
     fontSize: '2rem',
-    marginBottom: '20px',
+    fontWeight: '800',
+    color: '#1f2937',
+    margin: '0 0 16px 0',
   },
-  balanceSection: {
-    marginBottom: '30px',
-  },
-  section: {
-    marginBottom: '30px',
-    padding: '20px',
-    border: '1px solid #ddd',
-    borderRadius: '6px',
-    backgroundColor: '#fafafa',
-    maxWidth: '600px',
-    margin: '0 auto 30px',
-    textAlign: 'left',
-  },
-  sectionTitle: {
-    fontSize: '1.5rem',
-    marginBottom: '15px',
-  },
-  form: {
-    display: 'inline-block',
-  },
-  formGroup: {
-    marginBottom: '15px',
-  },
-  label: {
-    display: 'block',
-    marginBottom: '5px',
+  backLink: {
+    color: '#374151',
+    textDecoration: 'none',
+    fontSize: '0.9375rem',
     fontWeight: '600',
   },
+  balanceTile: {
+    maxWidth: '450px',
+    margin: '0 auto 32px',
+  },
+  tile: {
+    backgroundColor: '#ffffff',
+    borderRadius: '8px',
+    padding: '24px',
+    marginBottom: '24px',
+    boxShadow: '0 1px 2px rgba(0,0,0,0.06)',
+    border: '1px solid #e5e7eb',
+    maxWidth: '900px',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
+  sectionTitle: {
+    fontSize: '1.75rem',
+    fontWeight: '700',
+    color: '#764ba2',
+    marginTop: 0,
+    marginBottom: '24px',
+  },
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '20px',
+  },
+  formGroup: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '10px',
+  },
+  label: {
+    fontSize: '0.9375rem',
+    fontWeight: '600',
+    color: '#374151',
+  },
   input: {
-    padding: '8px',
-    border: '1px solid #ccc',
-    borderRadius: '4px',
-    width: '200px',
-  },
-  button: {
-    padding: '10px 20px',
-    backgroundColor: '#dc3545',
-    color: 'white',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
+    padding: '12px',
+    border: '1px solid #d1d5db',
+    borderRadius: '8px',
     fontSize: '1rem',
+    backgroundColor: '#ffffff',
   },
-  list: {
-    listStyle: 'none',
-    padding: 0,
+  submitButton: {
+    padding: '12px 20px',
+    backgroundColor: '#111827',
+    color: '#ffffff',
+    border: 'none',
+    borderRadius: '8px',
+    fontSize: '1rem',
+    fontWeight: '600',
+    cursor: 'pointer',
   },
-  listItem: {
-    padding: '10px',
-    marginBottom: '10px',
-    backgroundColor: 'white',
-    borderRadius: '4px',
-    border: '1px solid #eee',
+  transactionGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
+    gap: '16px',
   },
-  link: {
-    color: '#007bff',
-    textDecoration: 'none',
+  transactionTile: {
+    padding: '16px',
+    backgroundColor: '#ffffff',
+    borderRadius: '8px',
+    border: '1px solid #e5e7eb',
+  },
+  transactionHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: '8px',
+  },
+  transactionAmount: {
+    fontSize: '1.125rem',
+    fontWeight: '700',
+    color: '#b91c1c',
+  },
+  transactionDesc: {
+    fontSize: '1rem',
+    fontWeight: '600',
+    color: '#1f2937',
+    marginBottom: '8px',
+  },
+  transactionDate: {
+    fontSize: '0.875rem',
+    color: '#6b7280',
+  },
+  emptyMessage: {
+    textAlign: 'center',
+    color: '#764ba2',
+    padding: '32px',
+    fontSize: '1rem',
   },
 };
 
 export default DavidDebits;
-
