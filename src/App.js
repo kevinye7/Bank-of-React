@@ -20,14 +20,21 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      accountBalance: 0,
-      credits: [],
-      debits: [],
+      // Kevin bank state
+      kevinCredits: [],
+      kevinDebits: [],
+      kevinBalance: 0,
+      kevinAuthenticated: false,
       kevinUser: {
         userName: 'Kevin User',
         email: 'kevin@example.com',
         memberSince: '11/22/99',
       },
+      // David bank state
+      davidCredits: [],
+      davidDebits: [],
+      davidBalance: 0,
+      davidAuthenticated: false,
       davidUser: {
         userName: 'David User',
         email: 'david@example.com',
@@ -46,47 +53,81 @@ class App extends Component {
       const debitsResponse = await fetch('https://johnnylaicode.github.io/api/debits.json');
       const debitsData = await debitsResponse.json();
       
+      // Initialize both banks with fetched data (independent copies)
       this.setState({
-        credits: creditsData,
-        debits: debitsData
-      }, this.calculateBalance);
+        kevinCredits: creditsData,
+        kevinDebits: debitsData,
+        davidCredits: creditsData,
+        davidDebits: debitsData,
+      }, () => {
+        this.calculateKevinBalance();
+        this.calculateDavidBalance();
+      });
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   }
 
-  calculateBalance = () => {
-    const totalCredits = this.state.credits.reduce((total, credit) => total + credit.amount, 0);
-    const totalDebits = this.state.debits.reduce((total, debit) => total + debit.amount, 0);
-    const accountBalance = totalCredits - totalDebits;
-    
-    this.setState({ accountBalance: parseFloat(accountBalance.toFixed(2)) });
+  calculateKevinBalance = () => {
+    const totalCredits = this.state.kevinCredits.reduce((total, credit) => total + credit.amount, 0);
+    const totalDebits = this.state.kevinDebits.reduce((total, debit) => total + debit.amount, 0);
+    const kevinBalance = totalCredits - totalDebits;
+    this.setState({ kevinBalance: parseFloat(kevinBalance.toFixed(2)) });
   }
 
-  addCredit = (description, amount) => {
+  calculateDavidBalance = () => {
+    const totalCredits = this.state.davidCredits.reduce((total, credit) => total + credit.amount, 0);
+    const totalDebits = this.state.davidDebits.reduce((total, debit) => total + debit.amount, 0);
+    const davidBalance = totalCredits - totalDebits;
+    this.setState({ davidBalance: parseFloat(davidBalance.toFixed(2)) });
+  }
+
+  addKevinCredit = (description, amount) => {
     const newCredit = {
-      id: this.state.credits.length + 1,
-      description: description,
+      id: this.state.kevinCredits.length + 1,
+      description,
       amount: parseFloat(amount),
-      date: new Date().toISOString().split('T')[0] // yyyy-mm-dd format
+      date: new Date().toISOString().split('T')[0]
     };
-
     this.setState(prevState => ({
-      credits: [...prevState.credits, newCredit]
-    }), this.calculateBalance);
+      kevinCredits: [...prevState.kevinCredits, newCredit]
+    }), this.calculateKevinBalance);
   }
 
-  addDebit = (description, amount) => {
-    const newDebit = {
-      id: this.state.debits.length + 1,
-      description: description,
+  addDavidCredit = (description, amount) => {
+    const newCredit = {
+      id: this.state.davidCredits.length + 1,
+      description,
       amount: parseFloat(amount),
-      date: new Date().toISOString().split('T')[0] // yyyy-mm-dd format
+      date: new Date().toISOString().split('T')[0]
     };
-
     this.setState(prevState => ({
-      debits: [...prevState.debits, newDebit]
-    }), this.calculateBalance);
+      davidCredits: [...prevState.davidCredits, newCredit]
+    }), this.calculateDavidBalance);
+  }
+
+  addKevinDebit = (description, amount) => {
+    const newDebit = {
+      id: this.state.kevinDebits.length + 1,
+      description,
+      amount: parseFloat(amount),
+      date: new Date().toISOString().split('T')[0]
+    };
+    this.setState(prevState => ({
+      kevinDebits: [...prevState.kevinDebits, newDebit]
+    }), this.calculateKevinBalance);
+  }
+
+  addDavidDebit = (description, amount) => {
+    const newDebit = {
+      id: this.state.davidDebits.length + 1,
+      description,
+      amount: parseFloat(amount),
+      date: new Date().toISOString().split('T')[0]
+    };
+    this.setState(prevState => ({
+      davidDebits: [...prevState.davidDebits, newDebit]
+    }), this.calculateDavidBalance);
   }
 
   mockLogInKevin = (logInInfo) => {
@@ -95,7 +136,7 @@ class App extends Component {
     if (logInInfo.email) {
       newUser.email = logInInfo.email;
     }
-    this.setState({ kevinUser: newUser });
+    this.setState({ kevinUser: newUser, kevinAuthenticated: true });
   }
 
   mockLogInDavid = (logInInfo) => {
@@ -104,7 +145,7 @@ class App extends Component {
     if (logInInfo.email) {
       newUser.email = logInInfo.email;
     }
-    this.setState({ davidUser: newUser });
+    this.setState({ davidUser: newUser, davidAuthenticated: true });
   }
 
   render() {
@@ -114,7 +155,9 @@ class App extends Component {
 
     // Kevin's bank components
     const KevinHomeComponent = () => (
-      <KevinHome accountBalance={this.state.accountBalance} />
+      this.state.kevinAuthenticated
+        ? <KevinHome accountBalance={this.state.kevinBalance} />
+        : <KevinLogin user={this.state.kevinUser} mockLogIn={this.mockLogInKevin} />
     );
 
     const KevinUserProfileComponent = () => (
@@ -130,24 +173,32 @@ class App extends Component {
     );
 
     const KevinCreditsComponent = () => (
-      <KevinCredits
-        credits={this.state.credits}
-        addCredit={this.addCredit}
-        accountBalance={this.state.accountBalance}
-      />
+      this.state.kevinAuthenticated
+        ? (
+          <KevinCredits
+            credits={this.state.kevinCredits}
+            addCredit={this.addKevinCredit}
+            accountBalance={this.state.kevinBalance}
+          />
+        ) : <KevinLogin user={this.state.kevinUser} mockLogIn={this.mockLogInKevin} />
     );
 
     const KevinDebitsComponent = () => (
-      <KevinDebits
-        debits={this.state.debits}
-        addDebit={this.addDebit}
-        accountBalance={this.state.accountBalance}
-      />
+      this.state.kevinAuthenticated
+        ? (
+          <KevinDebits
+            debits={this.state.kevinDebits}
+            addDebit={this.addKevinDebit}
+            accountBalance={this.state.kevinBalance}
+          />
+        ) : <KevinLogin user={this.state.kevinUser} mockLogIn={this.mockLogInKevin} />
     );
 
     // David's bank components
     const DavidHomeComponent = () => (
-      <DavidHome accountBalance={this.state.accountBalance} />
+      this.state.davidAuthenticated
+        ? <DavidHome accountBalance={this.state.davidBalance} />
+        : <DavidLogin user={this.state.davidUser} mockLogIn={this.mockLogInDavid} />
     );
 
     const DavidUserProfileComponent = () => (
@@ -163,19 +214,25 @@ class App extends Component {
     );
 
     const DavidCreditsComponent = () => (
-      <DavidCredits
-        credits={this.state.credits}
-        addCredit={this.addCredit}
-        accountBalance={this.state.accountBalance}
-      />
+      this.state.davidAuthenticated
+        ? (
+          <DavidCredits
+            credits={this.state.davidCredits}
+            addCredit={this.addDavidCredit}
+            accountBalance={this.state.davidBalance}
+          />
+        ) : <DavidLogin user={this.state.davidUser} mockLogIn={this.mockLogInDavid} />
     );
 
     const DavidDebitsComponent = () => (
-      <DavidDebits
-        debits={this.state.debits}
-        addDebit={this.addDebit}
-        accountBalance={this.state.accountBalance}
-      />
+      this.state.davidAuthenticated
+        ? (
+          <DavidDebits
+            debits={this.state.davidDebits}
+            addDebit={this.addDavidDebit}
+            accountBalance={this.state.davidBalance}
+          />
+        ) : <DavidLogin user={this.state.davidUser} mockLogIn={this.mockLogInDavid} />
     );
 
     return (
