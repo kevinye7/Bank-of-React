@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import AccountBalance from './AccountBalance';
+import KevinAccountBalance from './kevin_AccountBalance';
 import { Link } from 'react-router-dom';
 
-class Home extends Component {
+class KevinHome extends Component {
   render() {
     return (
       <div>
@@ -17,10 +17,10 @@ class Home extends Component {
           <Link to="/bank/debits">Debits</Link>
         </nav>
 
-        <AccountBalance accountBalance={this.props.accountBalance} />
+        <KevinAccountBalance accountBalance={this.props.accountBalance} />
       </div>
     );
   }
 }
 
-export default Home;
+export default KevinHome;

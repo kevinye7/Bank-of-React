@@ -12,7 +12,7 @@ class LandingPage extends Component {
           <div style={styles.bankCard}>
             <h2 style={styles.bankName}>David's Bank</h2>
             <p style={styles.bankDescription}>Access your personal banking portal</p>
-            <Link to="/bank" style={styles.button}>
+            <Link to="/mybank" style={styles.button}>
               Go to David's Bank
             </Link>
           </div>
@@ -20,14 +20,9 @@ class LandingPage extends Component {
           <div style={styles.bankCard}>
             <h2 style={styles.bankName}>Kevin's Bank</h2>
             <p style={styles.bankDescription}>Access Kevin's banking portal</p>
-            <a 
-              href="https://kevinye7.github.io/Bank-of-React/" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              style={styles.button}
-            >
+            <Link to="/bank" style={styles.button}>
               Go to Kevin's Bank
-            </a>
+            </Link>
           </div>
         </div>
       </div>

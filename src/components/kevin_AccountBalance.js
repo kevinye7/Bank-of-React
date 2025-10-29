@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class AccountBalance extends Component {
+class KevinAccountBalance extends Component {
   render() {
     return (
       <div>
@@ -10,4 +10,4 @@ class AccountBalance extends Component {
   }
 }
 
-export default AccountBalance;
+export default KevinAccountBalance;
