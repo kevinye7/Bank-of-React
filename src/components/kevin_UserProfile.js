@@ -11,24 +11,29 @@ class KevinUserProfile extends Component {
   render() {
     return (
       <div style={styles.container}>
-        <h1 style={styles.title}>User Profile</h1>
+        <header style={styles.header}>
+          <h1 style={styles.title}>User Profile</h1>
+          <Link to="/bank" style={styles.backLink}>← Back to Home</Link>
+        </header>
 
-        <div style={styles.profileCard}>
-          <div style={styles.infoRow}>
-            <strong>Username:</strong> {this.props.userName}
-          </div>
-          {this.props.email && (
-            <div style={styles.infoRow}>
-              <strong>Email:</strong> {this.props.email}
+        <div style={styles.tile}>
+          <div style={styles.profileSection}>
+            <div style={styles.profileField}>
+              <span style={styles.fieldLabel}>Username</span>
+              <span style={styles.fieldValue}>{this.props.userName}</span>
             </div>
-          )}
-          <div style={styles.infoRow}>
-            <strong>Member Since:</strong> {this.props.memberSince}
+            {this.props.email && (
+              <div style={styles.profileField}>
+                <span style={styles.fieldLabel}>Email</span>
+                <span style={styles.fieldValue}>{this.props.email}</span>
+              </div>
+            )}
+            <div style={styles.profileField}>
+              <span style={styles.fieldLabel}>Member Since</span>
+              <span style={styles.fieldValue}>{this.props.memberSince}</span>
+            </div>
           </div>
         </div>
-        
-        <br/>
-        <Link to="/bank" style={styles.link}>Return to Home</Link>
       </div>
     );
   }
@@ -36,30 +41,57 @@ class KevinUserProfile extends Component {
 
 const styles = {
   container: {
-    padding: '40px 20px',
+    minHeight: '100vh',
+    backgroundColor: '#f3f4f6',
+    padding: '32px 24px',
+  },
+  header: {
     textAlign: 'center',
+    marginBottom: '32px',
   },
   title: {
     fontSize: '2rem',
-    marginBottom: '20px',
+    fontWeight: '700',
+    color: '#1e40af',
+    margin: '0 0 16px 0',
   },
-  profileCard: {
-    display: 'inline-block',
-    padding: '20px 30px',
-    border: '1px solid #ddd',
-    borderRadius: '4px',
-    backgroundColor: '#f9f9f9',
-    marginBottom: '20px',
-    textAlign: 'left',
-  },
-  infoRow: {
-    margin: '12px 0',
-    fontSize: '1rem',
-    lineHeight: '1.6',
-  },
-  link: {
-    color: '#007bff',
+  backLink: {
+    color: '#1e40af',
     textDecoration: 'none',
+    fontSize: '0.9375rem',
+    fontWeight: '600',
+  },
+  tile: {
+    backgroundColor: '#ffffff',
+    borderRadius: '12px',
+    padding: '32px',
+    maxWidth: '500px',
+    margin: '0 auto',
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06)',
+  },
+  profileSection: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '24px',
+  },
+  profileField: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
+    paddingBottom: '24px',
+    borderBottom: '1px solid #e5e7eb',
+  },
+  fieldLabel: {
+    fontSize: '0.875rem',
+    fontWeight: '600',
+    color: '#6b7280',
+    textTransform: 'uppercase',
+    letterSpacing: '0.05em',
+  },
+  fieldValue: {
+    fontSize: '1.125rem',
+    fontWeight: '600',
+    color: '#1f2937',
   },
 };
 

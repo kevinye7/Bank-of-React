@@ -31,54 +31,181 @@ class KevinDebits extends Component {
     const { debits, accountBalance } = this.props;
 
     return (
-      <div>
-        <h1>Debits</h1>
-        
-        <KevinAccountBalance accountBalance={accountBalance} />
-        
-        <div>
-          <h2>Add New Debit</h2>
-          <form onSubmit={this.handleSubmit}>
-            <div>
-              <label>Description: </label>
+      <div style={styles.container}>
+        <header style={styles.header}>
+          <h1 style={styles.title}>Debits</h1>
+          <Link to="/bank" style={styles.backLink}>← Back to Home</Link>
+        </header>
+
+        <div style={styles.balanceTile}>
+          <KevinAccountBalance accountBalance={accountBalance} />
+        </div>
+
+        <div style={styles.tile}>
+          <h2 style={styles.sectionTitle}>Add New Debit</h2>
+          <form onSubmit={this.handleSubmit} style={styles.form}>
+            <div style={styles.formGroup}>
+              <label style={styles.label}>Description</label>
               <input
                 type="text"
                 value={this.state.description}
                 onChange={this.handleDescriptionChange}
                 required
+                style={styles.input}
+                placeholder="Enter debit description"
               />
             </div>
-            <div>
-              <label>Amount: </label>
+            <div style={styles.formGroup}>
+              <label style={styles.label}>Amount</label>
               <input
                 type="number"
                 step="0.01"
                 value={this.state.amount}
                 onChange={this.handleAmountChange}
                 required
+                style={styles.input}
+                placeholder="0.00"
               />
             </div>
-            <button type="submit">Add Debit</button>
+            <button type="submit" style={styles.submitButton}>Add Debit</button>
           </form>
         </div>
 
-        <div>
-          <h2>Debit History</h2>
-          <ul>
-            {debits.map(debit => (
-              <li key={debit.id}>
-                Description: {debit.description} | 
-                Amount: ${debit.amount.toFixed(2)} | 
-                Date: {debit.date}
-              </li>
-            ))}
-          </ul>
+        <div style={styles.tile}>
+          <h2 style={styles.sectionTitle}>Debit History</h2>
+          <div style={styles.transactionList}>
+            {debits.length === 0 ? (
+              <p style={styles.emptyMessage}>No debits yet. Add your first debit above.</p>
+            ) : (
+              debits.map(debit => (
+                <div key={debit.id} style={styles.transactionCard}>
+                  <div style={styles.transactionHeader}>
+                    <span style={styles.transactionDesc}>{debit.description}</span>
+                    <span style={styles.transactionAmount}>-${debit.amount.toFixed(2)}</span>
+                  </div>
+                  <div style={styles.transactionDate}>{debit.date}</div>
+                </div>
+              ))
+            )}
+          </div>
         </div>
-
-        <Link to="/bank">Return to Home</Link>
       </div>
     );
   }
 }
+
+const styles = {
+  container: {
+    minHeight: '100vh',
+    backgroundColor: '#f3f4f6',
+    padding: '32px 24px',
+  },
+  header: {
+    textAlign: 'center',
+    marginBottom: '32px',
+  },
+  title: {
+    fontSize: '2rem',
+    fontWeight: '700',
+    color: '#1e40af',
+    margin: '0 0 16px 0',
+  },
+  backLink: {
+    color: '#1e40af',
+    textDecoration: 'none',
+    fontSize: '0.9375rem',
+    fontWeight: '600',
+  },
+  balanceTile: {
+    maxWidth: '400px',
+    margin: '0 auto 32px',
+  },
+  tile: {
+    backgroundColor: '#ffffff',
+    borderRadius: '12px',
+    padding: '24px',
+    marginBottom: '24px',
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06)',
+    maxWidth: '800px',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
+  sectionTitle: {
+    fontSize: '1.5rem',
+    fontWeight: '600',
+    color: '#1f2937',
+    marginTop: 0,
+    marginBottom: '20px',
+  },
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+  },
+  formGroup: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
+  },
+  label: {
+    fontSize: '0.875rem',
+    fontWeight: '600',
+    color: '#374151',
+  },
+  input: {
+    padding: '12px',
+    border: '1px solid #d1d5db',
+    borderRadius: '8px',
+    fontSize: '1rem',
+    transition: 'border-color 0.2s',
+  },
+  submitButton: {
+    padding: '12px 24px',
+    backgroundColor: '#dc2626',
+    color: '#ffffff',
+    border: 'none',
+    borderRadius: '8px',
+    fontSize: '1rem',
+    fontWeight: '600',
+    cursor: 'pointer',
+    transition: 'background-color 0.2s',
+  },
+  transactionList: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '12px',
+  },
+  transactionCard: {
+    padding: '16px',
+    backgroundColor: '#f9fafb',
+    borderRadius: '8px',
+    border: '1px solid #e5e7eb',
+  },
+  transactionHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: '8px',
+  },
+  transactionDesc: {
+    fontSize: '1rem',
+    fontWeight: '600',
+    color: '#1f2937',
+  },
+  transactionAmount: {
+    fontSize: '1.125rem',
+    fontWeight: '700',
+    color: '#dc2626',
+  },
+  transactionDate: {
+    fontSize: '0.875rem',
+    color: '#6b7280',
+  },
+  emptyMessage: {
+    textAlign: 'center',
+    color: '#6b7280',
+    padding: '24px',
+  },
+};
 
 export default KevinDebits;
